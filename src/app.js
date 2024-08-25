@@ -2,14 +2,13 @@ import swaggerUI from 'swagger-ui-express';
 import express from 'express';
 import path from 'path';
 import YAML from 'yamljs';
-import {fileURLToPath} from 'url';
-import {userRouter} from './resources/users/user.router.js';
-import {boardRouter} from './resources/boards/board.router.js';
-import {taskRouter} from './resources/tasks/task.router.js';
-import {errorMiddleware} from "../middlewares/error-middleware.js";
-import {morganMiddleware} from "../middlewares/morgan-middleware.js";
-import {handlerGlobalError} from "../utils/handler-global.error.js";
-
+import { fileURLToPath } from 'url';
+import { userRouter } from './resources/users/user.router.js';
+import { boardRouter } from './resources/boards/board.router.js';
+import { taskRouter } from './resources/tasks/task.router.js';
+import { errorMiddleware } from '../middlewares/error-middleware.js';
+import { morganMiddleware } from '../middlewares/morgan-middleware.js';
+import { handlerGlobalError } from '../utils/handler-global.error.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +31,7 @@ handlerGlobalError();
 app.use(morganMiddleware);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
-app.use('/boards/:boardId/tasks',taskRouter);
-app.use(errorMiddleware())
+app.use('/boards/:boardId/tasks', taskRouter);
+app.use(errorMiddleware());
 
 export { app };
