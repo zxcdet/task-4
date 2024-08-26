@@ -3,7 +3,7 @@ import * as boardService from './board.service.js';
 import status from 'http-status';
 import { wrapAsync } from '../../common/wrap-async.js';
 import { ResponseError } from '../../common/handler-error.js';
-import { validateMiddleware } from '../../../middlewares/validate-middleware.js';
+import { validateMiddleware } from '../../middlewares/validate-middleware.js';
 import { boardSchema } from './board.schema.js';
 import { paramSchema } from '../../common/param.schema.js';
 

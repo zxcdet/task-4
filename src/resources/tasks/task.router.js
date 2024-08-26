@@ -3,7 +3,7 @@ import express from 'express';
 import status from 'http-status';
 import { wrapAsync } from '../../common/wrap-async.js';
 import { ResponseError } from '../../common/handler-error.js';
-import { validateMiddleware } from '../../../middlewares/validate-middleware.js';
+import { validateMiddleware } from '../../middlewares/validate-middleware.js';
 import {
   paramBoardSchema,
   paramBoardTaskSchema,

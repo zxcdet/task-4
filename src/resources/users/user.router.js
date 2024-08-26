@@ -4,7 +4,7 @@ import { UserModel } from './user.model.js';
 import status from 'http-status';
 import { wrapAsync } from '../../common/wrap-async.js';
 import { ResponseError } from '../../common/handler-error.js';
-import { validateMiddleware } from '../../../middlewares/validate-middleware.js';
+import { validateMiddleware } from '../../middlewares/validate-middleware.js';
 import { userSchema } from './user.schema.js';
 import { paramSchema } from '../../common/param.schema.js';
 
