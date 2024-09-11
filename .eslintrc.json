@@ -1,4 +1,6 @@
 {
+  "extends": "standard",
+  "parser": "babel-eslint",
     "env": {
         "browser": true,
         "node": true,
@@ -6,6 +8,7 @@
         "es6": true,
         "jest": true
     },
+  "ignorePatterns": ["test/"],
     "parserOptions": {
         "ecmaFeatures": {
             "arrowFunctions": true,
@@ -63,7 +66,7 @@
         "no-obj-calls": 2,
         "no-regex-spaces": 2,
         "no-sparse-arrays": 2,
-        "no-unreachable": 2,
+        "no-unreachable": "off",
         "use-isnan": 2,
         "valid-typeof": 2,
         "no-unexpected-multiline": 0,
@@ -167,7 +170,7 @@
         "no-undef": 2,
         "no-unused-vars": 2,
         // Node.js
-        "callback-return": 2,
+        "callback-return": "off",
         "no-mixed-requires": 2,
         "no-path-concat": 2,
         "no-sync": 2,

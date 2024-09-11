@@ -7,8 +7,8 @@ import { userRouter } from './resources/users/user.router.js';
 import { boardRouter } from './resources/boards/board.router.js';
 import { taskRouter } from './resources/tasks/task.router.js';
 import { errorMiddleware } from './middlewares/error-middleware.js';
-import { morganMiddleware } from './middlewares/morgan-middleware.js';
-import { handlerGlobalError } from './utils/handler-global.error.js';
+import { morganMiddleware } from './common/logger.js';
+import { handlerGlobalError } from './middlewares/handler-global-error.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

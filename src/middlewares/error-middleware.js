@@ -7,9 +7,18 @@ export function errorMiddleware() {
     if (err instanceof ResponseError) {
       res.sendStatus(err.statusCode);
     } else {
+      res.sendStatus(status[status.INTERNAL_SERVER_ERROR]);
       logger.error({
         level: 'error',
-        message: `Error: ${status[status.INTERNAL_SERVER_ERROR]}`
+        status: status[status.INTERNAL_SERVER_ERROR],
+        message: err.message,
+        stack: err.stack,
+        query: req.query,
+        url: req.url,
+        params: req.params,
+        code: req.statusCode,
+        body: req.body.password ? { ...req.body, password: '***' } : req.body,
+        reason: err.reason || 'Unknown'
       });
       next();
     }

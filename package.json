@@ -13,8 +13,8 @@
     "lint": "eslint ./ --ignore-path .gitignore --fix",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
-    "prettier:check": "npx prettier \"src/**/*\" --check",
-    "prettier:write": "npx prettier \"src/**/*\" --write"
+    "prettier:check": "prettier --check **/src/**/*.js",
+    "prettier:write": "prettier --write **/src/**/*.js"
   },
   "keywords": [
     "rs",
@@ -47,6 +47,7 @@
     ]
   },
   "dependencies": {
+    "babel-eslint": "^10.1.0",
     "caesar-salad": "^2.1.0",
     "commander": "^6.1.0",
     "cross-env": "6.0.3",
