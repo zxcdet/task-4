@@ -1,16 +1,51 @@
-import { v7 as uuidv7 } from 'uuid';
+import mongoose from 'mongoose';
 
-class BoardModel {
-  constructor({ title, columns } = {}) {
-    this.id = uuidv7();
-    this.title = title;
-    this.columns = columns.map(val => {
-      return {
-        ...val,
-        id: uuidv7()
-      };
-    });
+const boardSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true
+    },
+    columns: [
+      {
+        title: {
+          type: String,
+          required: true
+        },
+        order: {
+          type: Number,
+          required: true
+        },
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+          default() {
+            return this._iwd;
+          }
+        }
+      }
+    ],
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      default() {
+        return this._id;
+      }
+    }
+  },
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        if (ret.columns) {
+          ret.columns.forEach(item => {
+            delete item._id;
+          });
+        }
+      }
+    }
   }
-}
+);
+const Board = mongoose.model('BoardSchema', boardSchema);
 
-export { BoardModel };
+export { Board };

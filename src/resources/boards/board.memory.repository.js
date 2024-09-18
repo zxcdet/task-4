@@ -1,19 +1,21 @@
-import * as db from '../../db/db.js';
+import { Board } from './board.model.js';
+import { Task } from '../tasks/task.model.js';
 
 const getAll = async () => {
-  return db.finAllBoards();
+  return Board.find();
 };
 const getById = async id => {
-  return db.getByIdBoard(id);
+  return Board.findById(id);
 };
 const create = async body => {
-  return db.createBoard(body);
+  return Board.create(body);
 };
 const deleteById = async id => {
-  return db.deleteByIdBoard(id);
+  await Task.deleteMany({ boardId: id });
+  return Board.findByIdAndDelete(id);
 };
 const updateById = async (body, id) => {
-  return db.updateByIdBoard(body, id);
+  return Board.findByIdAndUpdate(id, body);
 };
 
 export { getAll, create, getById, deleteById, updateById };

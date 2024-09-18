@@ -1,28 +1,37 @@
-import { v7 as uuidv7 } from 'uuid';
+import mongoose from 'mongoose';
 
-class TaskModel {
-  constructor({ title, order, description, userId, columnId } = {}, id) {
-    this.id = uuidv7();
-    this.title = title;
-    this.order = order;
-    this.description = description;
-    this.userId = userId;
-    this.boardId = id;
-    this.columnId = columnId;
-  }
-
-  toResponse(task) {
-    if (task) {
-      return {
-        id: task.id,
-        title: task.title,
-        order: task.order,
-        description: task.description,
-        userId: task.userId
-      };
+const taskSchema = new mongoose.Schema(
+  {
+    title: String,
+    order: Number,
+    description: {
+      type: String,
+      required: true
+    },
+    userId: {
+      type: String,
+      default: null
+    },
+    boardId: {
+      type: String
+    },
+    columnId: String,
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      default() {
+        return this._id;
+      }
     }
-    return {};
+  },
+  {
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.__v;
+        delete ret._id;
+      }
+    }
   }
-}
+);
+const Task = mongoose.model('Task', taskSchema);
 
-export { TaskModel };
+export { Task };

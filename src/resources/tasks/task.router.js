@@ -45,9 +45,9 @@ router
     validateMiddleware(paramBoardTaskSchema, 'params'),
     wrapAsync(async (req, res) => {
       const { boardId, taskId } = req.params;
-      const tasks = await taskService.getById(req.body, boardId, taskId);
-      if (tasks) {
-        res.json(tasks);
+      const task = await taskService.getById(boardId, taskId);
+      if (task) {
+        res.json(task);
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -70,7 +70,7 @@ router
     validateMiddleware(paramBoardTaskSchema, 'params'),
     wrapAsync(async (req, res) => {
       const { boardId, taskId } = req.params;
-      const tasks = await taskService.deleteById(req.body, boardId, taskId);
+      const tasks = await taskService.deleteById(boardId, taskId);
       if (tasks) {
         res.sendStatus(status.OK);
       } else {

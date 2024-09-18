@@ -1,19 +1,19 @@
-import * as db from '../../db/db.js';
+import { Task } from './task.model.js';
 
 const getAll = async id => {
-  return db.finAllTasks(id);
+  return Task.find({ boardId: id });
 };
-const getById = async (body, id, taskId) => {
-  return db.getByIdTask(body, id, taskId);
+const getById = async (id, taskId) => {
+  return Task.findOne({ boardId: id, id: taskId });
 };
 const create = async (body, id) => {
-  return db.createTask(body, id);
+  return Task.create({ ...body, boardId: id });
 };
-const deleteById = async (body, id, taskId) => {
-  return db.deleteByIdTask(body, id, taskId);
+const deleteById = async (id, taskId) => {
+  return Task.findByIdAndDelete({ boardId: id, _id: taskId });
 };
 const updateById = async (body, id, taskId) => {
-  return db.updateByIdTask(body, id, taskId);
+  return Task.findOneAndUpdate({ boardId: id, _id: taskId }, body);
 };
 
 export { getAll, create, getById, deleteById, updateById };

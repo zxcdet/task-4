@@ -1,17 +1,10 @@
-import { v7 as uuidv7 } from 'uuid';
+import mongoose from 'mongoose';
 
 class UserModel {
-  constructor({ name, login, password } = {}) {
-    this.id = uuidv7();
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
-
   toResponse(user) {
     if (user) {
       return {
-        id: user.id,
+        id: user._id,
         name: user.name,
         login: user.login
       };
@@ -20,4 +13,20 @@ class UserModel {
   }
 }
 
-export { UserModel };
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  login: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  id: String
+});
+const User = mongoose.model('User', userSchema);
+export { UserModel, User };

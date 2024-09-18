@@ -1,19 +1,21 @@
-import * as db from '../../db/db.js';
+import { User } from './user.model.js';
+import { Task } from '../tasks/task.model.js';
 
 const getAll = async () => {
-  return db.findAllUsers();
+  return User.find();
 };
 const getById = async id => {
-  return db.getByIdUser(id);
+  return User.findById(id);
 };
 const create = async body => {
-  return db.createUser(body);
+  return User.create(body);
 };
 const deleteById = async id => {
-  return db.deleteByIdUser(id);
+  await Task.updateMany({ userId: id }, { userId: null });
+  return User.findByIdAndDelete(id);
 };
 const updateById = async (body, id) => {
-  return db.updateByIdUser(body, id);
+  return User.findByIdAndUpdate(id, body);
 };
 
 export { getAll, create, getById, deleteById, updateById };
