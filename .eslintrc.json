@@ -207,7 +207,7 @@
             "never"
         ],
         "eol-last": 2,
-        "func-names": 1,
+        "func-names": 0,
         "func-style": [
             2,
             "declaration",
@@ -266,13 +266,7 @@
         ],
         "keyword-spacing": 2,
         "space-before-blocks": 2,
-        "space-before-function-paren": [
-            2,
-            {
-                "anonymous": "always",
-                "named": "never"
-            }
-        ],
+        "space-before-function-paren": "off",
         "space-in-parens": [
             2,
             "never"

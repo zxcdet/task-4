@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Task } from '../tasks/task.model.js';
 
 class UserModel {
   toResponse(user) {
@@ -27,6 +28,15 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   id: String
+});
+userSchema.pre('findOneAndDelete', async function(next) {
+  try {
+    const id = this.getQuery();
+    await Task.updateMany({ userId: id }, { userId: null });
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 const User = mongoose.model('User', userSchema);
 export { UserModel, User };

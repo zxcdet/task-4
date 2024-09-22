@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Task } from '../tasks/task.model.js';
 
 const boardSchema = new mongoose.Schema(
   {
@@ -19,7 +20,7 @@ const boardSchema = new mongoose.Schema(
         id: {
           type: mongoose.Schema.Types.ObjectId,
           default() {
-            return this._iwd;
+            return this._id;
           }
         }
       }
@@ -46,6 +47,15 @@ const boardSchema = new mongoose.Schema(
     }
   }
 );
+boardSchema.pre('findOneAndDelete', async function(next) {
+  try {
+    const boardId = this.getQuery()._id;
+    await Task.deleteMany({ boardId });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 const Board = mongoose.model('BoardSchema', boardSchema);
 
 export { Board };

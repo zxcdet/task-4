@@ -1,5 +1,4 @@
 import { Board } from './board.model.js';
-import { Task } from '../tasks/task.model.js';
 
 const getAll = async () => {
   return Board.find();
@@ -11,7 +10,6 @@ const create = async body => {
   return Board.create(body);
 };
 const deleteById = async id => {
-  await Task.deleteMany({ boardId: id });
   return Board.findByIdAndDelete(id);
 };
 const updateById = async (body, id) => {
