@@ -11,6 +11,8 @@ import { logger, morganMiddleware } from './common/logger.js';
 import { handlerGlobalError } from './middlewares/handler-global-error.js';
 import mongoose from 'mongoose';
 import { config } from './common/config.js';
+import { loginRouter } from './resources/login/login.router.js';
+import { authMiddleware } from './middlewares/auth-middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +45,8 @@ app.use('/', (req, res, next) => {
   next();
 });
 handlerGlobalError();
+app.use('/login', loginRouter);
+app.use(authMiddleware);
 app.use(morganMiddleware);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
