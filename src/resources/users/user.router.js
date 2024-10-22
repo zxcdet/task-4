@@ -44,7 +44,7 @@ router
     validateMiddleware(paramSchema, 'params'),
     wrapAsync(async (req, res) => {
       const id = req.params.id;
-      const user = await usersService.getById(id);
+      const user = await usersService.findOne({ _id: id });
       if (user) {
         res.json(userModel.toResponse(user));
       } else {

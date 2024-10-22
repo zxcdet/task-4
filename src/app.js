@@ -7,29 +7,18 @@ import { userRouter } from './resources/users/user.router.js';
 import { boardRouter } from './resources/boards/board.router.js';
 import { taskRouter } from './resources/tasks/task.router.js';
 import { errorMiddleware } from './middlewares/error-middleware.js';
-import { logger, morganMiddleware } from './common/logger.js';
+import { morganMiddleware } from './common/logger.js';
 import { handlerGlobalError } from './middlewares/handler-global-error.js';
-import mongoose from 'mongoose';
-import { config } from './common/config.js';
 import { loginRouter } from './resources/login/login.router.js';
+
 import { authMiddleware } from './middlewares/auth-middleware.js';
+import { connectDb } from './common/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-mongoose
-  .connect(config.MONGO_CONNECTION_STRING)
-  .then(() => {
-    console.log('MongoDB connected.');
-  })
-  .catch(error => {
-    console.log(error);
-    logger.error({
-      level: 'error',
-      message: `Db error: ${error}`
-    });
-  });
+connectDb();
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 

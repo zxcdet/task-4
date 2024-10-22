@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Task } from '../tasks/task.model.js';
+import bcrypt from 'bcrypt';
 
 class UserModel {
   toResponse(user) {
@@ -16,8 +17,7 @@ class UserModel {
 
 const userSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
+    type: String
   },
   login: {
     type: String,
@@ -33,6 +33,14 @@ userSchema.pre('findOneAndDelete', async function(next) {
   try {
     const id = this.getQuery();
     await Task.updateMany({ userId: id }, { userId: null });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+userSchema.pre('save', async function(next) {
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
     next();
   } catch (err) {
     next(err);

@@ -2,7 +2,6 @@ import Joi from 'joi';
 
 const userSchema = Joi.object({
   name: Joi.string()
-    .required()
     .max(30)
     .min(1),
   login: Joi.string()

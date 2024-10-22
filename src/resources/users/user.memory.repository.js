@@ -3,8 +3,8 @@ import { User } from './user.model.js';
 const getAll = async () => {
   return User.find();
 };
-const getById = async id => {
-  return User.findById(id);
+const findOne = async entity => {
+  return User.findOne(entity);
 };
 const create = async body => {
   return User.create(body);
@@ -16,4 +16,4 @@ const updateById = async (body, id) => {
   return User.findByIdAndUpdate(id, body);
 };
 
-export { getAll, create, getById, deleteById, updateById };
+export { getAll, create, findOne, deleteById, updateById };
