@@ -1,6 +1,6 @@
 import express from 'express';
 import * as usersService from './user.service.js';
-import { UserModel } from './user.model.js';
+import { toSave, UserSqlModel } from './user.model.js';
 import status from 'http-status';
 import { wrapAsync } from '../../common/wrap-async.js';
 import { ResponseError } from '../../common/handler-error.js';
@@ -9,18 +9,14 @@ import { userSchema } from './user.schema.js';
 import { paramSchema } from '../../common/param.schema.js';
 
 const router = express.Router();
-const userModel = new UserModel();
+const userSqlModel = new UserSqlModel();
 router
   .route('/')
   .get(
     wrapAsync(async (req, res) => {
       const user = await usersService.getAll();
       if (user.length > 0) {
-        res.json(
-          user.map(value => {
-            return { name: value.name, id: value.id, login: value.login };
-          })
-        );
+        res.json(user);
       } else {
         res.json([]);
       }
@@ -29,9 +25,10 @@ router
   .post(
     validateMiddleware(userSchema),
     wrapAsync(async (req, res) => {
-      const user = await usersService.create(req.body);
-      if (user) {
-        res.json(userModel.toResponse(user));
+      const data = await toSave(req.body);
+      const user = await usersService.create(data);
+      if (user.length) {
+        res.json(userSqlModel.toResponse(...user));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -44,9 +41,9 @@ router
     validateMiddleware(paramSchema, 'params'),
     wrapAsync(async (req, res) => {
       const id = req.params.id;
-      const user = await usersService.findOne({ _id: id });
+      const user = await usersService.findById(id);
       if (user) {
-        res.json(userModel.toResponse(user));
+        res.json(userSqlModel.toResponse(...user));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -57,9 +54,10 @@ router
     validateMiddleware(userSchema),
     wrapAsync(async (req, res) => {
       const id = req.params.id;
-      const user = await usersService.updateUserById(req.body, id);
+      const data = await toSave(req.body);
+      const user = await usersService.updateUserById(data, id);
       if (user) {
-        res.json(userModel.toResponse(user));
+        res.json(userSqlModel.toResponse(...user));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -70,7 +68,7 @@ router
     wrapAsync(async (req, res) => {
       const id = req.params.id;
       const user = await usersService.deleteById(id);
-      if (user) {
+      if (user.length) {
         res.sendStatus(status.NO_CONTENT);
       } else {
         throw new ResponseError(status.NOT_FOUND);

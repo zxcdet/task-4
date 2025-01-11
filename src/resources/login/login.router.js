@@ -11,11 +11,11 @@ const router = express.Router();
 router.route('/').post(
   wrapAsync(async (req, res) => {
     const { login, password } = req.body;
-    const entity = await userService.findOne({ login });
-    const isCorrect = await bcrypt.compare(password, entity.password);
+    const entity = await userService.findByLogin(login);
+    const isCorrect = await bcrypt.compare(password, entity[0].password);
     if (isCorrect) {
       const token = jwt.sign(
-        { login: req.body.login, userId: entity.id },
+        { login: req.body.login, userId: entity[0].id },
         config.JWT_SECRET_KEY,
         { expiresIn: '20h' }
       );

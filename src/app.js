@@ -12,7 +12,7 @@ import { handlerGlobalError } from './middlewares/handler-global-error.js';
 import { loginRouter } from './resources/login/login.router.js';
 
 import { authMiddleware } from './middlewares/auth-middleware.js';
-import { connectDb } from './common/db.js';
+import { connectDb } from './common/connect-db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

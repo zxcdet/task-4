@@ -9,8 +9,10 @@ import {
   paramBoardTaskSchema,
   taskSchema
 } from './task.schema.js';
+import { TaskModel } from './task.model.js';
 
 const router = express.Router({ mergeParams: true });
+const taskModel = new TaskModel();
 router
   .route('/')
   .get(
@@ -19,7 +21,8 @@ router
       const id = req.params.boardId;
       const tasks = await taskService.getAll(id);
       if (tasks.length > 0) {
-        res.json(tasks);
+        const result = tasks.map(task => taskModel.toResponse(task));
+        res.json(result);
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -31,8 +34,8 @@ router
     wrapAsync(async (req, res) => {
       const id = req.params.boardId;
       const tasks = await taskService.create(req.body, id);
-      if (tasks) {
-        res.json(tasks);
+      if (tasks.length) {
+        res.json(taskModel.toResponse(...tasks));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -46,8 +49,8 @@ router
     wrapAsync(async (req, res) => {
       const { boardId, taskId } = req.params;
       const task = await taskService.getById(boardId, taskId);
-      if (task) {
-        res.json(task);
+      if (task.length) {
+        res.json(taskModel.toResponse(...task));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -60,7 +63,7 @@ router
       const { boardId, taskId } = req.params;
       const tasks = await taskService.updateById(req.body, boardId, taskId);
       if (tasks) {
-        res.json(tasks);
+        res.json(taskModel.toResponse(...tasks));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
