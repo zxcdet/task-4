@@ -6,6 +6,12 @@ Run commands:
 $ npm install
 ```
 
+Docker compose setup:
+```bash
+$ docker-compose up -d
+```
+
+
 ## Start server 
 ```bash
 $ npm run start

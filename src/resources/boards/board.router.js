@@ -6,15 +6,18 @@ import { ResponseError } from '../../common/handler-error.js';
 import { validateMiddleware } from '../../middlewares/validate-middleware.js';
 import { boardSchema } from './board.schema.js';
 import { paramSchema } from '../../common/param.schema.js';
+import { BoardModel } from './board.model.js';
 
 const router = express.Router();
+const boardModel = new BoardModel();
 router
   .route('/')
   .get(
     wrapAsync(async (req, res) => {
       const boards = await boardService.getAll();
-      if (boards.length > 0) {
-        res.json(boards);
+      if (boards.length) {
+        const result = boards.map(board => boardModel.toResponse(board));
+        res.json(result);
       } else {
         res.json([]);
       }
@@ -23,9 +26,10 @@ router
   .post(
     validateMiddleware(boardSchema),
     wrapAsync(async (req, res) => {
-      const board = await boardService.create(req.body);
+      const saveData = boardModel.toSave(req.body);
+      const board = await boardService.create(saveData);
       if (board) {
-        res.json(board);
+        res.json(boardModel.toResponse(...board));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -39,8 +43,8 @@ router
     wrapAsync(async (req, res) => {
       const id = req.params.id;
       const board = await boardService.getById(id);
-      if (board) {
-        res.json(board);
+      if (board.length) {
+        res.json(boardModel.toResponse(...board));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -51,9 +55,13 @@ router
     validateMiddleware(boardSchema),
     wrapAsync(async (req, res) => {
       const id = req.params.id;
-      const board = await boardService.updateById(req.body, id);
-      if (board) {
-        res.json(board);
+      const saveData = {
+        ...req.body,
+        columns: JSON.stringify(req.body.columns)
+      };
+      const board = await boardService.updateById(saveData, id);
+      if (board.length) {
+        res.json(boardModel.toResponse(...board));
       } else {
         throw new ResponseError(status.NOT_FOUND);
       }
@@ -64,7 +72,7 @@ router
     wrapAsync(async (req, res) => {
       const id = req.params.id;
       const board = await boardService.deleteById(id);
-      if (board) {
+      if (board[0].id) {
         res.sendStatus(status.OK);
       } else {
         throw new ResponseError(status.NOT_FOUND);

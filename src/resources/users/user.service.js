@@ -4,8 +4,9 @@ const getAll = () => usersRepo.getAll();
 const create = body => {
   return usersRepo.create(body);
 };
-const findOne = entity => usersRepo.findOne(entity);
+const findByLogin = login => usersRepo.findByLogin(login);
+const findById = id => usersRepo.findOneById(id);
 const deleteById = id => usersRepo.deleteById(id);
 const updateUserById = (body, id) => usersRepo.updateById(body, id);
 
-export { getAll, create, findOne, deleteById, updateUserById };
+export { getAll, create, findByLogin, deleteById, updateUserById, findById };

@@ -1,61 +1,26 @@
-import mongoose from 'mongoose';
-import { Task } from '../tasks/task.model.js';
+import { v4 as uuidv4 } from 'uuid';
 
-const boardSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true
-    },
-    columns: [
-      {
-        title: {
-          type: String,
-          required: true
-        },
-        order: {
-          type: Number,
-          required: true
-        },
-        id: {
-          type: mongoose.Schema.Types.ObjectId,
-          default() {
-            return this._id;
-          }
-        }
-      }
-    ],
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      default() {
-        return this._id;
-      }
+class BoardModel {
+  toResponse(board) {
+    if (board) {
+      return { ...board, id: String(board.id) };
     }
-  },
-  {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__v;
-        if (ret.columns) {
-          ret.columns.forEach(item => {
-            delete item._id;
-          });
-        }
-      }
-    }
+    return {};
   }
-);
-boardSchema.pre('findOneAndDelete', async function(next) {
-  try {
-    const boardId = this.getQuery()._id;
-    await Task.deleteMany({ boardId });
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
-const Board = mongoose.model('BoardSchema', boardSchema);
 
-export { Board };
+  toSave(board) {
+    if (board) {
+      const columnsData = board.columns.map(column => ({
+        ...column,
+        id: uuidv4()
+      }));
+      return {
+        ...board,
+        columns: JSON.stringify(columnsData)
+      };
+    }
+    return {};
+  }
+}
+
+export { BoardModel };

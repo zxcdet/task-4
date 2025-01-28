@@ -23,9 +23,6 @@ const boardSchema = Joi.object({
         .max(50)
     })
   ),
-  id: Joi.string()
-    .min(5)
-    .lowercase()
-    .max(50)
+  id: Joi.string().lowercase()
 });
 export { boardSchema };
