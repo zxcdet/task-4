@@ -14,7 +14,10 @@
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
     "prettier:check": "prettier --check **/src/**/*.js",
-    "prettier:write": "prettier --write **/src/**/*.js"
+    "prettier:write": "prettier --write **/src/**/*.js",
+    "migration:create": "prisma migrate dev --create-only",
+    "migrate": "prisma migrate dev",
+    "migrate:prod": "prisma migrate deploy"
   },
   "keywords": [
     "rs",
@@ -47,6 +50,7 @@
     ]
   },
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "babel-eslint": "^10.1.0",
     "bcrypt": "^5.1.1",
     "caesar-salad": "^2.1.0",
@@ -78,6 +82,7 @@
     "lint-staged": "9.5.0",
     "nodemon": "2.0.2",
     "prettier": "1.19.1",
+    "prisma": "^6.2.1",
     "supertest": "4.0.2"
   }
 }

@@ -12,13 +12,12 @@ import { handlerGlobalError } from './middlewares/handler-global-error.js';
 import { loginRouter } from './resources/login/login.router.js';
 
 import { authMiddleware } from './middlewares/auth-middleware.js';
-import { connectDb } from './common/db.js';
+import { prismaSaveMiddleware } from './middlewares/prisma-save-middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-connectDb();
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
@@ -36,6 +35,7 @@ app.use('/', (req, res, next) => {
 handlerGlobalError();
 app.use('/login', loginRouter);
 app.use(authMiddleware);
+prismaSaveMiddleware();
 app.use(morganMiddleware);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);

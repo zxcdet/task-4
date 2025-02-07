@@ -11,7 +11,8 @@ const router = express.Router();
 router.route('/').post(
   wrapAsync(async (req, res) => {
     const { login, password } = req.body;
-    const entity = await userService.findOne({ login });
+    const entity = await userService.findLogin(login);
+    entity.id = entity.id.toString();
     const isCorrect = await bcrypt.compare(password, entity.password);
     if (isCorrect) {
       const token = jwt.sign(

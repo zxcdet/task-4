@@ -13,43 +13,28 @@ const taskSchema = Joi.object({
     .max(30)
     .min(1),
   userId: Joi.string()
-    .max(50)
-    .min(5)
     .lowercase()
     .allow(null),
   boardId: Joi.string()
-    .max(50)
-    .min(5)
     .lowercase()
     .allow(null),
   columnId: Joi.string()
-    .max(50)
-    .min(5)
     .lowercase()
     .allow(null),
-  id: Joi.string()
-    .min(5)
-    .lowercase()
-    .max(50)
+  id: Joi.string().lowercase()
 });
 
 const paramBoardSchema = Joi.object({
-  boardId: Joi.string()
-    .required()
-    .min(5)
-    .lowercase()
-    .max(50)
+  boardId: Joi.required()
 });
 
 const paramBoardTaskSchema = Joi.object({
   boardId: Joi.string()
     .required()
-    .min(5)
     .lowercase()
     .max(50),
   taskId: Joi.string()
     .required()
-    .min(5)
     .lowercase()
     .max(50)
 });
