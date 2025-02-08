@@ -13,7 +13,6 @@ const userSchema = Joi.object({
     .max(30)
     .min(1),
   id: Joi.string()
-    .min(5)
     .lowercase()
     .max(50)
 });

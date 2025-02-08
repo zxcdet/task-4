@@ -1,19 +1,33 @@
-import { Board } from './board.model.js';
+import { prisma } from '../../common/prisma-client.js';
 
 const getAll = async () => {
-  return Board.find();
+  return prisma.board.findMany();
 };
 const getById = async id => {
-  return Board.findById(id);
+  return prisma.board.findUnique({
+    where: { id }
+  });
 };
 const create = async body => {
-  return Board.create(body);
+  return prisma.board.create({
+    data: {
+      title: body.title,
+      columns: body.columns
+    }
+  });
 };
 const deleteById = async id => {
-  return Board.findByIdAndDelete(id);
+  return prisma.board.delete({
+    where: { id }
+  });
 };
 const updateById = async (body, id) => {
-  return Board.findByIdAndUpdate(id, body);
+  return prisma.board.update({
+    data: {
+      ...body
+    },
+    where: { id }
+  });
 };
 
 export { getAll, create, getById, deleteById, updateById };

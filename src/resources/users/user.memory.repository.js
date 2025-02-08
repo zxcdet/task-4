@@ -1,19 +1,37 @@
-import { User } from './user.model.js';
+import { prisma } from '../../common/prisma-client.js';
 
 const getAll = async () => {
-  return User.find();
+  return prisma.user.findMany();
 };
-const findOne = async entity => {
-  return User.findOne(entity);
+const findByLogin = async login => {
+  return prisma.user.findFirst({
+    where: { login }
+  });
+};
+const findOneUser = async id => {
+  return prisma.user.findUnique({
+    where: { id }
+  });
 };
 const create = async body => {
-  return User.create(body);
+  return prisma.user.create({
+    data: {
+      ...body
+    }
+  });
 };
 const deleteById = async id => {
-  return User.findByIdAndDelete(id);
+  return prisma.user.delete({
+    where: { id }
+  });
 };
 const updateById = async (body, id) => {
-  return User.findByIdAndUpdate(id, body);
+  return prisma.user.update({
+    data: {
+      ...body
+    },
+    where: { id }
+  });
 };
 
-export { getAll, create, findOne, deleteById, updateById };
+export { getAll, create, findByLogin, deleteById, updateById, findOneUser };
